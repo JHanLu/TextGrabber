@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TextGrabber</string>
+    <string name="confirm">确认</string>
+    <string name="clear">清除</string>
+    <string name="train">训练模式</string>
+    <string name="reco">识别模式</string>
+</resources>
