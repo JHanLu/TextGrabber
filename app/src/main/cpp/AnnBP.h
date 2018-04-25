@@ -44,6 +44,7 @@ public:
 
     void Initialize(int seed);
     void Read(int mfd, jlong off);
+    void ReadF(char *filename);
     void Save(char *filename);
     void Identify(double *input_unit,int input_num,double *target,int target_num);
     void Train(double *input_unit,int input_num, double *target,int target_num, double *eo, double *eh);
@@ -55,6 +56,7 @@ public:
     double eta1;
     BPNN* net;
     BPNN* bpnn_read(int mfd, jlong off);
+    BPNN* bpnn_readf(char *filename);
     void bpnn_save(BPNN *net, char *filename);
     void bpnn_train(BPNN *net, double eta, double momentum, double *eo, double *eh);
     void bpnn_feedforward(BPNN* net);

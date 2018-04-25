@@ -61,25 +61,30 @@ public class MainActivity extends AppCompatActivity {
                 double [] in = new double[28*28];
                 double [] out = new double[6];
                 in = mPathView.save("/sdcard/pic.png", true, 0);
-                Toast.makeText(this, "图片已保存", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "识别成功", Toast.LENGTH_SHORT).show();
                 mPathView.clear();
 
-                //读取训练文件bp.dat
-                AssetFileDescriptor afd = getResources().openRawResourceFd(R.raw.bp);
-                if(afd != null) {
-                    System.out.println("afd读取成功");
-                    FileDescriptor fd = afd.getFileDescriptor();
-                    int off = (int) afd.getStartOffset();
-                    int len = (int) afd.getLength();
-                    out = stringFromJNI(in, fd, off, len);
-                    System.out.println(Arrays.toString(out));
-
-                    GetResult gr = new GetResult();
-                    String output = gr.transform(out);
-                    System.out.println(output);
-                    TextView tv = findViewById(R.id.textView2);
-                    tv.setText("识别结果：" + output);
+                if(fileIsExists("/sdcard/bp.dat")) {
+                    out = stringFromJNI2(in);
+                    Log.d("test", "from sd card");
+                } else {
+                    //读取训练文件bp.dat
+                    AssetFileDescriptor afd = getResources().openRawResourceFd(R.raw.bp);
+                    if(afd != null) {
+                        System.out.println("afd读取成功");
+                        FileDescriptor fd = afd.getFileDescriptor();
+                        int off = (int) afd.getStartOffset();
+                        out = stringFromJNI(in, fd, off);
+                    }
+                    Log.d("test", "from res");
                 }
+                System.out.println(Arrays.toString(out));
+
+                GetResult gr = new GetResult();
+                String output = gr.transform(out);
+                System.out.println(output);
+                TextView tv = findViewById(R.id.textView2);
+                tv.setText("识别结果：" + output);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -100,10 +105,23 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean fileIsExists(String str) {
+        try {
+            File f = new File(str);
+            if(!f.exists()) {
+                return false;
+            }
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public native double[] stringFromJNI(double [] Attr, FileDescriptor fd, long off, long len);
+    public native double[] stringFromJNI(double [] Attr, FileDescriptor fd, long off);
+    public native double[] stringFromJNI2(double [] Attr);
 
 }

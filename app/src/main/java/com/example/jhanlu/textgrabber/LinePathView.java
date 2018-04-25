@@ -279,7 +279,7 @@ public class LinePathView extends View {
         return arr;
     }
 
-    public void saveSample(String path, String str) throws IOException {
+    public double [] saveSample(String path, String str) throws IOException {
         Bitmap bitmap=cachebBitmap;
         bitmap = clearBlank(bitmap, 0);
         bitmap = scaleBitmap(bitmap, 28, 28);
@@ -297,6 +297,13 @@ public class LinePathView extends View {
             }
         }
 
+        double []arr = new double[28*28]; // 存放bitmap的数组，和list值一样
+        for (int i = 0; i < list.size(); i++) {
+            double dou = Double.parseDouble((String)list.get(i));
+            BigDecimal bg = new BigDecimal(dou);
+            double f1 = bg.setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue();
+            arr[i] = f1;
+        }
         //输出结果到samples.txt
         try {
             FileWriter fw = null;
@@ -318,6 +325,7 @@ public class LinePathView extends View {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        return arr;
     }
 
     //固定几位小数

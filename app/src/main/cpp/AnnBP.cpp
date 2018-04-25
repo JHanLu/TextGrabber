@@ -20,7 +20,7 @@ static const char *TAG = "Ann-bp";
 
 CAnnBP::CAnnBP()
 {
-    eta1=0.05;
+    eta1=0.1;
     momentum1=0.1;
 
 }
@@ -371,7 +371,6 @@ BPNN* CAnnBP::bpnn_read(int mfd, jlong off)
 
     FILE *fp;
     fp = fdopen(mfd, "r");
-    LOGD("read: &d,%d", mfd, off);
     if(NULL == fp) {
         LOGE("file open error");
     }
@@ -401,6 +400,42 @@ BPNN* CAnnBP::bpnn_read(int mfd, jlong off)
 
     bpnn_zero_weights(new1->input_prev_weights, n1, n2);
     bpnn_zero_weights(new1->hidden_prev_weights, n2, n3);
+    return (new1);
+}
+
+BPNN* CAnnBP::bpnn_readf(char *filename)
+{
+    BPNN *new1;
+    int n1=728, n2=300, n3=6, i, j;
+
+    FILE *fp;
+    fp = fopen(filename, "r");
+    fscanf(fp, "%d\n", &n1);
+    fscanf(fp, "%d\n", &n2);
+    fscanf(fp, "%d\n", &n3);
+    new1 = bpnn_internal_create(n1, n2, n3);
+
+    for (i = 0; i <= n1; i++)
+    {
+        for (j = 0; j <= n2; j++)
+        {
+            fscanf(fp, "%lf\n", &new1->input_weights[i][j]);
+        }
+    }
+
+    for (i = 0; i <= n2; i++)
+    {
+        for (j = 0; j <= n3; j++)
+        {
+            fscanf(fp, "%lf\n", &new1->hidden_weights[i][j]);
+        }
+    }
+
+    fclose(fp);
+
+    bpnn_zero_weights(new1->input_prev_weights, n1, n2);
+    bpnn_zero_weights(new1->hidden_prev_weights, n2, n3);
+
     return (new1);
 }
 
@@ -452,6 +487,11 @@ void CAnnBP::Save(char *filename)
 void CAnnBP::Read(int mfd,jlong off)
 {
     net=bpnn_read(mfd, off);
+}
+
+void CAnnBP::ReadF(char *filename)
+{
+    net=bpnn_readf(filename);
 }
 
 void CAnnBP::SetBParm(double eta, double momentum)
