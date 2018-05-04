@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //将bitmap保存到相册需扫描相册环境
+            //将图片保存到相册需扫描相册环境
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 File outputFile = new File("/sdcard/qm.png");
                 final Intent scanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);

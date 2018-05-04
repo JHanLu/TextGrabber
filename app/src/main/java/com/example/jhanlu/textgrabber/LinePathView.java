@@ -206,32 +206,32 @@ public class LinePathView extends View {
         if (clearBlank) {
             bitmap = clearBlank(bitmap, blank);
         }
-        //
-        ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos1);
-        byte[] buffer1 = bos1.toByteArray();
-        if (buffer1 != null) {
-            File file = new File("/sdcard/qm1.png");
-            if (file.exists()) {
-                file.delete();
-            }
-            OutputStream outputStream = new FileOutputStream(file);
-            outputStream.write(buffer1);
-            outputStream.close();
-        }
-        //
-        bitmap = scaleBitmap(bitmap, 28, 28);
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
         byte[] buffer = bos.toByteArray();
         if (buffer != null) {
-            File file = new File(path);
+            File file = new File("/sdcard/qm1.png");
             if (file.exists()) {
                 file.delete();
             }
             OutputStream outputStream = new FileOutputStream(file);
             outputStream.write(buffer);
             outputStream.close();
+        }
+
+       bitmap = scaleBitmap(bitmap, 28, 28);
+        ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos1);
+        byte[] buffer1 = bos1.toByteArray();
+        if (buffer1 != null) {
+            File file1 = new File(path);
+            if (file1.exists()) {
+                file1.delete();
+            }
+            OutputStream outputStream1 = new FileOutputStream(file1);
+            outputStream1.write(buffer1);
+            outputStream1.close();
         }
 
         //输出bitmap
