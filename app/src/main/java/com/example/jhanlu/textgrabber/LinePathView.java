@@ -281,19 +281,19 @@ public class LinePathView extends View {
 
     public double [] saveSample(String path, String str) throws IOException {
         Bitmap bitmap=cachebBitmap;
-        bitmap = clearBlank(bitmap, 0);
-        bitmap = scaleBitmap(bitmap, 28, 28);
+        bitmap = clearBlank(bitmap, 0); // 边界归一化
+        bitmap = scaleBitmap(bitmap, 28, 28); // 大小归一化
 
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
-        System.out.println("宽："+w+" 高："+h);
         ArrayList list = new ArrayList();
         for(int i=0; i< w; i++) {
             for(int j=0; j<h; j++) {
                 int color = bitmap.getPixel(i, j);
+                //灰度化和数值归一化
                 double g = ((30*Color.red(color) + 59*Color.green(color) + 11*Color.blue(color))/100)/255.0;
                 String gnum = roundByScale(g, 6);
-                list.add(gnum);
+                list.add(gnum); // 保存像素数据
             }
         }
 

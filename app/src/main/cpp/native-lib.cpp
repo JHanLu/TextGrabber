@@ -106,9 +106,6 @@ Java_com_example_jhanlu_textgrabber_TrainActivity_trainSample(
         bp.ReadF("/sdcard/bp.dat");
         for(int i=0; i < 60; i++) {
             bp.Train(in, 28*28, out, 6, &eo, &eh);
-            if(i==299) {
-                LOGD("299次训练");
-            }
         }
         bp.Save("/sdcard/bp.dat");
 }
@@ -149,9 +146,6 @@ Java_com_example_jhanlu_textgrabber_TrainActivity_trainSample1(
             bp.Read(mfd, off);
             for(int i=0; i < 60; i++) {
                 bp.Train(in, 28*28, out, 6, &eo, &eh);
-                if(i==299) {
-                    LOGD("299次训练");
-                }
             }
             bp.Save("/sdcard/bp.dat");
         }

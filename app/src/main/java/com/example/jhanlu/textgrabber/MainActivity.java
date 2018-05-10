@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.example.jhanlu.textgrabber.util.GetResult;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 
@@ -47,6 +50,28 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        RadioGroup colorRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        final RadioButton black = (RadioButton) findViewById(R.id.radioBlack);
+        final RadioButton red = (RadioButton) findViewById(R.id.radioRed);
+        final RadioButton blue = (RadioButton) findViewById(R.id.radioBlue);
+        colorRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int id) {
+                if(black.getId() == id) {
+                    changeColor(-16777216);
+                }else if(red.getId() == id) {
+                    changeColor(-65536);
+                } else if(blue.getId() == id) {
+                    changeColor(-16776961);
+                }
+            }
+        });
+
+    }
+
+    public void changeColor(int color) {
+        LinePathView imgView = (LinePathView) findViewById(R.id.view);
+        imgView.setPenColor(color);
     }
 
     public void clearView(View view) {
@@ -61,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 double [] in = new double[28*28];
                 double [] out = new double[6];
                 in = mPathView.save("/sdcard/pic.png", true, 0);
-                Toast.makeText(this, "识别成功", Toast.LENGTH_SHORT).show();
                 mPathView.clear();
 
                 if(fileIsExists("/sdcard/bp.dat")) {
